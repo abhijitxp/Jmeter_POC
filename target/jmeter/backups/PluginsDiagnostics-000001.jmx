@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1437642847000</longProp>
+        <longProp name="ThreadGroup.end_time">1437642847000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">import java.io.File;
+
+String path = &quot;/opt/performance/apache/apache-jmeter-3.3/lib/ext&quot;;
+
+log.info(&quot;path &quot; + path);
+File folder = new File(path);
+log.info(&quot;exists &quot; + folder.exists());
+
+File[] listOfFiles = folder.listFiles();
+
+for (int i = 0; i &lt; listOfFiles.length; i++) {
+  if (listOfFiles[i].isFile()) {
+    log.info(&quot;File &quot; + listOfFiles[i].getName());
+  } else if (listOfFiles[i].isDirectory()) {
+    log.info(&quot;Directory &quot; + listOfFiles[i].getName());
+  }
+}
+
+String className = &quot;kg.apc.jmeter.vizualizers.AggregateReportGui&quot;;
+try {
+  log.debug(&quot;Trying: &quot; + className);
+  Class cls = Thread.currentThread().getContextClassLoader().loadClass(className);
+
+String file = cls.getProtectionDomain().getCodeSource().getLocation().getFile();
+log.info(cls.getName() + &quot; was loaded from &quot;+file);
+} catch (Throwable e) {
+  if (e instanceof ClassNotFoundException) {
+      log.debug(&quot;Plugin not found by class: &quot; + className);
+  } else {
+      log.warn(&quot;Unable to load class: &quot; + className, e);
+  }           
+}
+</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="script">import org.jmeterplugins.repository.PluginManager;
+import org.apache.jmeter.util.JMeterUtils;
+
+vars.put(&quot;pluginsVersion&quot;, PluginManager.getAllPluginsStatus());
+vars.put(&quot;jMeterVersion&quot;,JMeterUtils.getJMeterVersion());
+
+log.info(&quot;--&gt; JMeter v.&quot; + vars.get(&quot;jMeterVersion&quot;) + &quot;, Plugins v.&quot; + vars.get(&quot;pluginsVersion&quot;));</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
